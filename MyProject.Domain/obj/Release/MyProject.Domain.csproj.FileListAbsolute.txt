@@ -1,0 +1,9 @@
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\bin\Release\MyProject.Domain.dll
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\bin\Release\MyProject.Domain.pdb
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\bin\Release\MyProject.Helpers.dll
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\bin\Release\MyProject.Helpers.pdb
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Release\MyProject.Domain.csprojAssemblyReference.cache
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Release\MyProject.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Release\MyProject.Domain.csproj.CopyComplete
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Release\MyProject.Domain.dll
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Release\MyProject.Domain.pdb

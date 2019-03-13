@@ -1,0 +1,6 @@
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\bin\Release\MyProject.Helpers.dll
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\bin\Release\MyProject.Helpers.pdb
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\obj\Release\MyProject.Helpers.csprojAssemblyReference.cache
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\obj\Release\MyProject.Helpers.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\obj\Release\MyProject.Helpers.dll
+C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Helpers\obj\Release\MyProject.Helpers.pdb
