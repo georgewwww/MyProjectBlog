@@ -1517,6 +1517,9 @@ footer .madeBy span {
     list-style-type: none;
     padding-inline-start: 0;
 }
+.validation-summary-errors ul li {
+    white-space: pre;
+}
 
 
 

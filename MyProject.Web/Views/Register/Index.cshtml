@@ -1,0 +1,86 @@
+﻿@model MyProject.Web.Models.UserRegister
+@using System.Web.Optimization
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="signupContainer">
+    <div class="signupWrap">
+        <div class="signupHeader">
+            <div class="shTitle">
+                register
+                <span class="shDot"></span>
+            </div>
+            <div class="shSubtitle">join us fella'</div>
+        </div>
+
+        @Html.ValidationSummary(true)
+        @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @id = "registerForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="inputCont" name="username">
+                <div class="inputTop">
+                    <div class="inputLabel">username</div>
+                </div>
+                @Html.TextBoxFor(m => m.Username, new { placeholder = "your username", id = "username", name = "username" })
+            </div>
+            <div class="inputCont" name="email">
+                <div class="inputTop">
+                    <div class="inputLabel">email</div>
+                </div>
+                @Html.TextBoxFor(m => m.Email, new { type = "email", placeholder = "your email", id = "email", name = "email" })
+            </div>
+            <div class="inputCont" name="password">
+                <div class="inputTop">
+                    <div class="inputLabel">password</div>
+                </div>
+                @Html.TextBoxFor(m => m.Password, new { type = "password", placeholder = "your password", id = "password", name = "password" })
+            </div>
+            <div class="inputCont" name="password">
+                <div class="inputTop">
+                    <div class="inputLabel">re-type password</div>
+                </div>
+                @Html.TextBoxFor(m => m.RePassword, new { type = "password", placeholder = "your password", id = "repassword", name = "repassword" })
+            </div>
+            <button class="btn primary">sign in</button>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/validation/js")
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#loginForm").validate({
+                rules: {
+                    Username: {
+                        required: true
+                    },
+                    Email: {
+                        required: true
+                    },
+                    Password: {
+                        required: true
+                    },
+                    RePassword: {
+                        required: true
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                },
+                errorPlacement: function (error, element) {
+                    $(element)
+                        .closest("form")
+                        .find("label[for='" + element.attr("id") + "']")
+                        .append(error);
+                },
+                errorElement: "span"
+            });
+        });
+
+
+    </script>
+}

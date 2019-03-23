@@ -9,13 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using AutoMapper;
+using MyProject.Domain.Enums;
+using System.Data.Entity.Validation;
 
 namespace MyProject.BusinessLogic
 {
 	public class UserApi
 	{
 		// Gen an response from login action
-		internal ULoginResp UserLoginAction(ULoginData data)
+		internal UActionResp UserLoginAction(ULoginData data)
 		{
 			UsersDbTable result;
 
@@ -26,10 +28,64 @@ namespace MyProject.BusinessLogic
 
 			if (result == null)
 			{
-				return new ULoginResp { Status = false, StatusMsg = "The username or password is incorrect" };
+				return new UActionResp { Status = false, StatusMsg = "The username or password is incorrect" };
 			}
 
-			return new ULoginResp { Status = true };
+			return new UActionResp { Status = true };
+		}
+
+		// Just logout the current user, if there is any
+		internal UActionResp UserLogoutAction(string cookie)
+		{
+			SessionDbTable result;
+
+			using (var db = new SessionContext())
+			{
+				result = db.Sessions.FirstOrDefault(s => s.CookieString == cookie);
+				if (result != null)
+				{
+					result.ExpireTime = DateTime.Now.AddHours(-1);
+					db.SaveChanges();
+					return new UActionResp { Status = true };
+				}
+			}
+			return new UActionResp { Status = false, StatusMsg = "User already signed out" };
+		}
+
+		// Insert new entry of user from register page
+		internal UActionResp UserRegisterAction(URegisterData data)
+		{
+			UsersDbTable result;
+
+			using (var db = new UserContext())
+			{
+				result = db.Users.FirstOrDefault(u => u.Username == data.Username);
+				if (result == null)
+				{
+					var newUser = Mapper.Map<UsersDbTable>(data);
+					newUser.Level = URole.User;
+					newUser.AvatarUrl = "/Content/imgs/default_avatar.png";
+
+					db.Users.Add(newUser);
+					try
+					{
+						db.SaveChanges();
+					}
+					catch (DbEntityValidationException ex)
+					{
+						// Retrieve the error messages as a list of strings.
+						var errorMessages = ex.EntityValidationErrors
+								.SelectMany(x => x.ValidationErrors)
+								.Select(x => x.ErrorMessage);
+
+						// Join the list to a single string.
+						var fullErrorMessage = string.Join(Environment.NewLine, errorMessages);
+						return new UActionResp { Status = false, StatusMsg = fullErrorMessage };
+					}
+					return new UActionResp { Status = true };
+				}
+			}
+			return new UActionResp { Status = false, StatusMsg = "This user already exists" };
 		}
 
 		// Generate the cookie and put in database
@@ -62,7 +118,7 @@ namespace MyProject.BusinessLogic
 					{
 						Username = username,
 						CookieString = apiCookie.Value,
-						ExpireTime = DateTime.Now.AddMinutes(60)
+						ExpireTime = DateTime.Now.AddDays(1)
 					});
 					db.SaveChanges();
 				}

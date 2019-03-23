@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyProject.Web.Models;
 
 namespace MyProject.Web.Controllers
 {
@@ -38,7 +39,22 @@ namespace MyProject.Web.Controllers
 				System.Web.HttpContext.Current.Session.Clear();
 				System.Web.HttpContext.Current.Session["LoginStatus"] = "logout";
 			}
-
+		}
+		
+		public UserData GetUser()
+		{
+			SessionStatus();
+			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
+			{
+				var user = System.Web.HttpContext.Current.GetMySessionObject();
+				UserData u = new UserData
+				{
+					Username = user.Username,
+					Level = user.Level
+				};
+				return u;
+			}
+			return new UserData();
 		}
     }
 }

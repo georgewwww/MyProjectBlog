@@ -5,8 +5,8 @@
 </button>
 <div class="collapse navbar-collapse" id="navbarContent">
     <ul class="navbar-nav headerNavBar mr-auto">
-        <li class="nav-item headerNavLink active">
-            <a class="nav-link" href="/Index">home</a>
+        <li class="nav-item headerNavLink @((ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Home") ? "active" : "")">
+            <a class="nav-link" href="/">home</a>
         </li>
         <li class="nav-item headerNavLink">
             <a class="nav-link" href="/Blog">blog</a>
@@ -15,7 +15,7 @@
             <a class="nav-link" href="#">services</a>
         </li>
         <li class="nav-item headerNavLink">
-            <a class="nav-link" href="/About">about</a>
+            <a class="nav-link" href="/Home/About">about</a>
         </li>
     </ul>
 </div>
@@ -44,13 +44,13 @@
                 @Model.Username
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                @if (Model.Level == MyProject.Domain.Enums.URole.Administrator)
+                @if (Model.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) > 0)
                 {
-                    <a class="dropdown-item" href="~/Administration"><b>Admin Panel</b></a>
+                    <a class="dropdown-item" href="/Admin"><b>Admin Panel</b></a>
                     <div class="dropdown-divider"></div>
                 }
-                <a class="dropdown-item" href="/Profile">Profile</a>
-                <a class="dropdown-item" href="/Logout">Logout</a>
+                <a class="dropdown-item" href="/Home/Profile">Profile</a>
+                <a class="dropdown-item" href="/Login/Logout">Logout</a>
             </div>
         }
         else

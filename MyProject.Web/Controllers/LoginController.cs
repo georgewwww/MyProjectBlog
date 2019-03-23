@@ -7,25 +7,28 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using MyProject.Domain.Entities;
+using System.Web.Routing;
+using MyProject.Web.Controllers.Attributes;
 
 namespace MyProject.Web.Controllers
 {
     public class LoginController : Controller
     {
 		private readonly ISession _session;
-
+		
 		public LoginController()
 		{
 			var bl = new InstanceBL();
 			_session = bl.GetSessionBL();
 		}
 
-        // GET: Login
+        [GuestMod]
         public ActionResult Index()
         {
             return View();
         }
 
+		[GuestMod]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Index(UserLogin login)
@@ -42,12 +45,29 @@ namespace MyProject.Web.Controllers
 					ControllerContext.HttpContext.Response.Cookies.Add(cookie);
 
 					return RedirectToAction("Index", "Home");
-				} else
+				}
+				else
 				{
 					ModelState.AddModelError("", userLogin.StatusMsg);
 				}
 			}
 			return View();
 		}
-    }
+
+		public ActionResult Logout()
+		{
+			var apiCookie = Request.Cookies["LOGIN-KEY"];
+			var sessionExist = _session.UserLogout(apiCookie.Value);
+			if (sessionExist.Status)
+			{
+				return new RedirectToRouteResult(new
+					RouteValueDictionary(new { controller = "Home", action = "Index" }));
+			}
+			else
+			{
+				ModelState.AddModelError("", sessionExist.StatusMsg);
+			}
+			return View();
+		}
+	}
 }

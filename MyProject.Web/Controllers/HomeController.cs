@@ -1,4 +1,5 @@
-﻿using MyProject.Web.Extension;
+﻿using AutoMapper;
+using MyProject.Web.Extension;
 using MyProject.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,24 @@ namespace MyProject.Web.Controllers
 		public new ActionResult Profile()
 		{
 			SessionStatus();
-			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] != "login")
+			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
+			{
+				var entity = System.Web.HttpContext.Current.GetMySessionObject();
+				var u = Mapper.Map<UserData>(entity);
+
+				return View(u);
+			} else
 			{
 				return RedirectToAction("Index", "Home");
 			}
+		}
+		
+		public ActionResult About()
+		{
+			var user = GetUser();
+			if (user != null)
+				return View(user);
+
 			return View();
 		}
     }

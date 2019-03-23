@@ -16,6 +16,9 @@ namespace MyProject.Web
 			{
 				cfg.CreateMap<UserLogin, ULoginData>();
 				cfg.CreateMap<UsersDbTable, UserEntity>();
+				cfg.CreateMap<UserEntity, UserData>();
+				cfg.CreateMap<UserRegister, URegisterData>();
+				cfg.CreateMap<URegisterData, UsersDbTable>();
 			});
 		}
 	}

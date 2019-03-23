@@ -2,7 +2,7 @@
 
 namespace MyProject.Domain.Entities
 {
-	public class ULoginResp
+	public class UActionResp
 	{
 		public bool Status { get; set; }
 		public string StatusMsg { get; set; }

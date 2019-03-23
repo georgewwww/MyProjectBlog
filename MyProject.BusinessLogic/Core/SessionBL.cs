@@ -6,9 +6,13 @@ namespace MyProject.BusinessLogic
 {
 	public class SessionBL : UserApi, ISession
 	{
-		public ULoginResp UserLogin(ULoginData data)
+		public UActionResp UserLogin(ULoginData data)
 		{
 			return UserLoginAction(data);
+		}
+		public UActionResp UserLogout(string cookie)
+		{
+			return UserLogoutAction(cookie);
 		}
 		public HttpCookie GenCookie(string username)
 		{
@@ -17,6 +21,10 @@ namespace MyProject.BusinessLogic
 		public UserEntity GetUserByCookie(string apiCookieValue)
 		{
 			return UserCookie(apiCookieValue);
+		}
+		public UActionResp UserRegister(URegisterData data)
+		{
+			return UserRegisterAction(data);
 		}
 	}
 }

@@ -17,12 +17,12 @@ namespace MyProject.Domain.Entities
 
 		[Required]
 		[Display(Name = "Username")]
-		[StringLength(30, MinimumLength = 4, ErrorMessage = "Username must be less than 30 characters")]
+		[StringLength(30, MinimumLength = 4, ErrorMessage = "Username must be more than 4 and less than 30 characters")]
 		public string Username { get; set; }
 
 		[Required]
 		[Display(Name = "Password")]
-		[StringLength(40, MinimumLength = 8, ErrorMessage = "Password must be more than 8 characters")]
+		[StringLength(40, MinimumLength = 4, ErrorMessage = "Password must be more than 4 and less than 40 characters")]
 		public string Password { get; set; }
 
 		[Required]

@@ -1,7 +1,140 @@
-﻿
+﻿@model MyProject.Web.Models.UserData
 @{
     ViewBag.Title = "Profile";
 }
 
-<h2>Profile</h2>
+<div class="profilePage">
+    <div class="profileCover" style="background-image: url('https://i.imgur.com/Wk7EnbU.png');">
+        <div class="mainWrap">
+            <div class="profileAvtName">
+                <div class="profileAvatar" style="background-image: url(@(Model.AvatarUrl != null ? Model.AvatarUrl : "'/Resources/default_avatar.png'"));"></div>
+                <div class="profileName">@Model.Username</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profileSection">
+        <div class="mainWrap">
+            <ul class="profileNavPills nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-overview" role="tab" aria-controls="pills-overview" aria-selected="true">overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-preferences" role="tab" aria-controls="pills-preferences" aria-selected="false">my preferences</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-password" role="tab" aria-controls="pills-password" aria-selected="false">change my password</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-overview" role="tabpanel" aria-labelledby="pills-overview-tab">
+                    <div class="mainWrap profileSectionCont">
+                        <div class="profileSectionTitle">account overview</div>
+                        <div class="profileOverviewDetails">
+                            <div class="profileOverviewDetail">
+                                <dt>display name</dt>
+                                <dd>@Model.Username</dd>
+                            </div>
+                            <div class="profileOverviewDetail">
+                                <dt>email</dt>
+                                <dd>@Model.Email</dd>
+                            </div>
+                            <div class="profileOverviewDetail">
+                                <dt>user since</dt>
+                                <dd>@Model.RegisterDate</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-preferences" role="tabpanel" aria-labelledby="pills-preferences-tab">
+                    <div class="mainWrap profileSectionCont">
+                        <div class="profileSectionTitle">account preferences</div>
+                        <form id="editProfileForm">
+                            <div class="profilePrefsCont">
+                                <div class="profilePassInputWrap">
+                                    <div class="ppiTitle">username</div>
+                                    @Html.TextBoxFor(model => model.Username, new { @placeholder = "your username", @readonly = "" })
+                                </div>
+                                <div class="profilePassInputWrap">
+                                    <div class="ppiTitle">email</div>
+                                    @Html.TextBoxFor(model => model.Email, new { @type = "email", @placeholder = "your email" })
+                                </div>
+                                <div class="profilePassBtns">
+                                    <a href="#" class="btn primary" onclick="EditProfile()">edit</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
+                    <div class="mainWrap profileSectionCont">
+                        <div class="profileSectionTitle">change my password</div>
+                        <form id="editPasswordForm">
+                            <div class="profilePassCont">
+                                <div class="profilePassInputWrap">
+                                    <div class="ppiTitle">current password</div>
+                                    <input id="Password" name="Password" type="password" value="">
+                                </div>
+                                <div class="profilePassInputWrap">
+                                    <div class="ppiTitle">new password</div>
+                                    <input id="NewPassword" name="NewPassword" type="password" value="">
+                                </div>
+                                <div class="profilePassInputWrap">
+                                    <div class="ppiTitle">repeat new password</div>
+                                    <input id="_NewPassword" name="_NewPassword" type="password" value="">
+                                </div>
+                                <div class="profilePassBtns">
+                                    <a href="#" class="btn primary" onclick="EditPassword()">submit</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var EditProfile = function () {
+        var data = $("#editProfileForm").serialize();
+
+        $.ajax({
+            type: "Post",
+            url: "/EditProfile",
+            data: data,
+            success: function (response) {
+                if (response == "fail") {
+                    alert("Error");
+                } else if (response == "success") {
+                    alert("Successfuly edited");
+                    window.location.href = "/Profile";
+                }
+            }
+        })
+    }
+
+    var EditPassword = function () {
+        var data = $("#editPasswordForm").serialize();
+
+        if ($("#NewPassword").val() != $("#_NewPassword").val()) {
+            alert("Passwords must be the same!");
+            return false;
+        }
+
+        $.ajax({
+            type: "Post",
+            url: "/EditProfilePass",
+            data: data,
+            success: function (response) {
+                if (response == "fail") {
+                    alert("Error");
+                } else if (response == "success") {
+                    alert("Successfuly edited");
+                    window.location.href = "/Profile";
+                }
+            }
+        })
+    }
+</script>
 
