@@ -1,5 +1,8 @@
-﻿namespace MyProject.Domain.Enums
+﻿using System;
+
+namespace MyProject.Domain.Enums
 {
+	[Serializable]
 	public enum URole
 	{
 		User,

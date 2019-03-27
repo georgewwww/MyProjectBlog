@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace MyProject.BusinessLogic
 {
-	class UserContext : DbContext
+	public class UserContext : DbContext
 	{
 		public UserContext() :
 			base("name = MyProjectDB")

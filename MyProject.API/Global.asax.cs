@@ -12,6 +12,7 @@ namespace MyProject.API
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-        }
+			AutoMapperConfig.Initialize();
+		}
     }
 }
