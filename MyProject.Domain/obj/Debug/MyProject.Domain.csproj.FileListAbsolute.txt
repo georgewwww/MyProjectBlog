@@ -7,3 +7,12 @@ C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\
 C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Debug\MyProject.Domain.csproj.CopyComplete
 C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Debug\MyProject.Domain.dll
 C:\Users\Admin\Documents\Visual Studio 2017\projects\MyProject\MyProject.Domain\obj\Debug\MyProject.Domain.pdb
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Domain.dll
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Domain.pdb
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Helpers.dll
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Helpers.pdb
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csprojAssemblyReference.cache
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csproj.CoreCompileInputs.cache
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csproj.CopyComplete
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.dll
+C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.pdb
