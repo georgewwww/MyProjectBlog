@@ -6,5 +6,9 @@
 		{
 			return new SessionBL();
 		}
+		public IBlog GetBlogBL()
+		{
+			return new BlogBL();
+		}
 	}
 }

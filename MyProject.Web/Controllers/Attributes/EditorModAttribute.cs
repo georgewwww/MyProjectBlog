@@ -10,11 +10,11 @@ using System.Web.Routing;
 
 namespace MyProject.Web.Controllers.Attributes
 {
-	public class AdminModAttribute : ActionFilterAttribute
+	public class EditorModAttribute : ActionFilterAttribute
 	{
 		private readonly ISession _sessionBL;
-		
-		public AdminModAttribute()
+
+		public EditorModAttribute()
 		{
 			var businessLogic = new InstanceBL();
 			_sessionBL = businessLogic.GetSessionBL();
@@ -26,7 +26,7 @@ namespace MyProject.Web.Controllers.Attributes
 			if (apiCookie != null)
 			{
 				var profile = _sessionBL.GetUserByCookie(apiCookie.Value);
-				if (profile != null && profile.Level == URole.Administrator)
+				if (profile != null && profile.Level.CompareTo(URole.Moderator) >= 0)
 				{
 					HttpContext.Current.SetMySessionObject(profile);
 				}

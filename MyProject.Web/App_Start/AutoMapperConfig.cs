@@ -19,6 +19,9 @@ namespace MyProject.Web
 				cfg.CreateMap<UserEntity, UserData>();
 				cfg.CreateMap<UserRegister, URegisterData>();
 				cfg.CreateMap<URegisterData, UsersDbTable>();
+				cfg.CreateMap<BlogDbTable, BlogEntity>();
+				cfg.CreateMap<BlogEntity, BlogDbTable>();
+				cfg.CreateMap<PostViewModel, BlogEntity>();
 			});
 		}
 	}

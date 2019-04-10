@@ -1,0 +1,175 @@
+﻿@model MyProject.Web.Models.PostViewModel
+@{
+    ViewBag.Title = "Create Post";
+}
+<div class="newPostCont">
+    <div class="mainWrap">
+        @Html.ValidationSummary(true)
+        @using (Html.BeginForm("Create", "Blog", FormMethod.Post, new { @id = "newPostForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="npcTitle">add new post</div>
+            <div class="npcInputWrapRow">
+                <div class="npcInputWrap">
+                    <div class="npcInputLabel">title</div>
+                    <div class="npcInputDesc">give this report a descriptive title.</div>
+                    @Html.TextBoxFor(m => m.Title, new
+               {
+                   placeholder = "your smart title",
+                   id = "title",
+                   name = "title",
+                   required = ""
+               })
+                </div>
+            </div>
+            <div class="npcInputWrapRow">
+                <div class="npcInputWrap">
+                    <div class="npcInputLabel">image</div>
+                    <div class="npcInputDesc">do you want that your post had an descriptive image?</div>
+                    @Html.TextBoxFor(m => m.ImageUrl, new
+               {
+                   placeholder = "smash that link here!",
+                   id = "imageUrl",
+                   name = "imageUrl",
+                   required = ""
+               })
+                </div>
+            </div>
+            <div class="npcInputWrap">
+                <div class="npcInputLabel">content</div>
+                <div class="npcInputDesc">describe all the need here.</div>
+                <div class="editorCont">
+                    <div class="editorHelpersCont noSelect">
+                        <div class="editorHelpersIcons">
+                            <i class="fas fa-bold" data-tooltip="bold"></i>
+                            <i class="fas fa-italic" data-tooltip="italic"></i>
+                            <i class="fas fa-align-left" data-tooltip="align left"></i>
+                            <i class="fas fa-align-center" data-tooltip="align center"></i>
+                            <i class="fas fa-align-right" data-tooltip="align right"></i>
+                            <i class="fas fa-link" data-tooltip="insert link"></i>
+                            <i class="far fa-image" data-tooltip="insert image"></i>
+                        </div>
+                        <div class="editorHelpersSpawn">
+                            <div id="editorImageUpload" class="imageUpload floating d-none">
+                                <div class="imgUplTypeWrap">
+                                    <div class="imgUplTypeUrlWrap">
+                                        <div class="imgUplTypeUrlWrapRight">
+                                            <input id="imageUrl" type="text" placeholder="--> url here <--" value="">
+                                            <div class="iutuiExtWrap">
+                                                <div class="iutuiewTitle">allowed extensions</div>
+                                                <div class="iutuiExtensions">
+                                                    <div class="iutuiExt">png</div>
+                                                    <div class="iutuiExt">gif</div>
+                                                    <div class="iutuiExt">svg</div>
+                                                    <div class="iutuiExt">jpg</div>
+                                                    <div class="iutuiExt">jpeg</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="iutuiErrorsWrap d-none">
+                                            <div class="iutuiError">forbidden extension!</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="imgUplBtnWrap">
+                                    <div class="btn primary" onclick="getImage()">submit image</div>
+                                    <div class="btn" onclick="closeImageHelper()">cancel</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contentText" id="PostContent" name="PostContent" contenteditable></div>
+                </div>
+            </div>
+            <div class="npcBtnsWrap">
+                <a href="#" onclick="PostThis()" class="btn primary">submit</a>
+                <a class="btn" href="/Blog">cancel</a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    var editorContent = document.querySelector(".contentText");
+
+    document.querySelector("i[data-tooltip='bold']").addEventListener("click", function (event) {
+        document.execCommand("bold", false, '');
+    }, false);
+
+    document.querySelector("i[data-tooltip='italic']").addEventListener("click", function (event) {
+        document.execCommand("italic", false, '');
+    }, false);
+
+    document.querySelector("i[data-tooltip='align left']").addEventListener("click", function (event) {
+        document.execCommand("justifyLeft", false, '');
+    }, false);
+
+    document.querySelector("i[data-tooltip='align center']").addEventListener("click", function (event) {
+        document.execCommand("justifyCenter", false, '');
+    }, false);
+
+    document.querySelector("i[data-tooltip='align right']").addEventListener("click", function (event) {
+        document.execCommand("justifyRight", false, '');
+    }, false);
+
+    document.querySelector("i[data-tooltip='insert link']").addEventListener("click", function (event) {
+        var url = prompt("Enter the URL");
+        document.execCommand("createLink", false, url);
+    }, false);
+
+    document.querySelector("i[data-tooltip='insert image']").addEventListener("click", function (event) {
+        document.getElementById('editorImageUpload').classList.toggle("d-none");
+        document.querySelector('.iutuiErrorsWrap').classList.add("d-none");
+        $("#imageUrl").val("");
+    }, false);
+
+    function closeImageHelper() {
+        document.getElementById('editorImageUpload').classList.add("d-none");
+    }
+
+    function getImage() {
+        var _validFileExtensions = [".jpg", ".jpeg", ".svg", ".gif", ".png"];
+        var data = $("#imageUrl").val();
+
+        if (data.length > 0) {
+            var valid = false;
+            for (var j = 0; j < _validFileExtensions.length; j++) {
+                var sCurExtension = _validFileExtensions[j];
+                if (data.substr(data.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                    valid = true;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                document.querySelector('.iutuiErrorsWrap').classList.remove("d-none");
+                return false;
+            }
+        }
+
+        const img = document.createElement("img");
+        img.src = data;
+        editorContent.appendChild(img);
+        document.getElementById('editorImageUpload').classList.toggle("d-none");
+        $("#imageUrl").val("");
+    }
+
+    var PostThis = function () {
+        var data = $("#newPostForm").serialize();
+        var content = document.querySelector(".contentText").innerHTML;
+
+        data = data + '&PostContent=' + content;
+
+        $.ajax({
+            type: "POST",
+            url: "/Blog/Create",
+            data: data,
+            success: function (response) {
+                alert("Successfuly posted");
+                window.location.href = "/Blog";
+            }
+        })
+    }
+
+</script>
+

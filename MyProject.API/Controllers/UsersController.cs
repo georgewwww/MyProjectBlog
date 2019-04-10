@@ -44,21 +44,21 @@ namespace MyProject.API.Controllers
 
 		// add new user  
 		// POST api/values  
-		public void Post(UsersDbTable user)
-		{
-		}
+		//public void Post(UsersDbTable user)
+		//{
+		//}
 
 		// update user
 		// PUT api/users/1
-		public HttpResponseMessage Put(int id, string email)
-		{
-		}
+		//public HttpResponseMessage Put(int id, string email)
+		//{
+		//}
 
 		// delete customer by id
 		// DELETE api/users/1
-		[HttpDelete, Route("{id}")]
-		public HttpResponseMessage Delete(int id)
-		{
-		}
+		//[HttpDelete, Route("{id}")]
+		//public HttpResponseMessage Delete(int id)
+		//{
+		//}
 	}
 }

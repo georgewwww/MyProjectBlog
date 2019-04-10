@@ -19,12 +19,8 @@ namespace MyProject.Web.Controllers
 			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
 			{
 				var user = System.Web.HttpContext.Current.GetMySessionObject();
-				UserData u = new UserData
-				{
-					Username = user.Username,
-					Level = user.Level
-				};
-				return View(u);
+				ViewBag.Username = user.Username;
+				ViewBag.Level = user.Level;
 			}
 
 			return View();
@@ -37,6 +33,8 @@ namespace MyProject.Web.Controllers
 			{
 				var entity = System.Web.HttpContext.Current.GetMySessionObject();
 				var u = Mapper.Map<UserData>(entity);
+				ViewBag.Username = u.Username;
+				ViewBag.Level = u.Level;
 
 				return View(u);
 			} else
@@ -47,9 +45,9 @@ namespace MyProject.Web.Controllers
 		
 		public ActionResult About()
 		{
-			var user = GetUser();
-			if (user != null)
-				return View(user);
+			var u = GetUser();
+			ViewBag.Username = u.Username;
+			ViewBag.Level = u.Level;
 
 			return View();
 		}

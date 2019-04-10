@@ -1,0 +1,112 @@
+﻿@model IEnumerable<MyProject.Domain.Entities.BlogEntity>
+@{
+    ViewBag.Title = "Blog";
+}
+
+<div class="tabPageHeader">
+    <div class="mainWrap">
+        <div class="tbhInfo">
+            <div class="tbhiTitle">
+                blog
+                <span class="tbhiTitleDot"></span>
+            </div>
+            <div class="tbhiDescr">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sodales interdum diam, sit amet consectetur tellus tristique id.</div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
+{
+    <div class="addPostTypeWrap">
+        <a href="/Blog/Create" class="addPostTypeCont">
+            <div class="iutuCont">
+                <div class="iutuThumb"><i class="fas fa-plus"></i></div>
+                <div class="iutuInfo">
+                    <div class="iutuiInstr">add new post</div>
+                    <div class="iutuiExtWrap">
+                        <div class="iutuiewTitle">again something new?</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+}
+
+<div class="blogPosts">
+    <div class="mainWrap">
+        <div class="blogPostsWrap">
+            @if (Model.Count() != 0)
+            {
+                foreach (var post in Model)
+                {
+                    <div class="blogPostCont" id="post__@post.PostId">
+                        <div class="bpcCover @(ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0 ? "postAdminPanel" : "") " style="background-image: url(@(post.ImageUrl != null ? post.ImageUrl : "'/Resources/nothing.png'"));">
+                            @if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
+                            {
+                                <a href="#" title="edit post" onclick="EditPost(@post.PostId)"><i class="far fa-edit"></i></a>
+                                if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) == 0)
+                                {
+                                    <a href="#" title="delete post" onclick="ConfirmDelete(@post.PostId)"><i class="far fa-trash-alt"></i></a>
+                                }
+                            }
+                        </div>
+                        <div class="bpcTitle">
+                            @Html.ActionLink(post.Title, "Posts", new { PostId = post.PostId })
+                        </div>
+                        <div class="bpcStats">
+                            <div class="bpcsLeft">
+                                <div class="bpcDate">@Html.DisplayFor(modelDate => post.Date)</div>
+                            </div>
+                            <div class="bpcsRight">
+                                <div class="bpcsrStat">
+                                    <i class="far fa-eye"></i>
+                                    <span>@post.Views</span>
+                                </div>
+                                <div class="bpcsAuthor" title="@post.PostAuthor" style="background-image: url(@post.AuthorAvatar);"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            } else
+            {
+                <h2>
+                    No entries found
+                </h2>
+            }
+        </div>
+    </div>
+    <input type="hidden" id="hiddenPostId" />
+
+    <div class="blogPostModal modal fade" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to delete this?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+                    <button type="button" class="btn primary" onclick="DeletePost()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blogPostModal modalPostEditor modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="editModalDiv"></div>
+            </div>
+        </div>
+    </div>
+</div>
