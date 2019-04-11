@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MyProject.Web.Models.IndexPostsViewModel
+@{
     ViewBag.Title = "Index";
 }
 
@@ -12,71 +13,51 @@
 </div>
 
 <div class="container">
-    <div class="jumbotron p-3 p-md-5 text-white rounded bg-darker">
-        <div class="col-md-6 padding-sides">
-            <div class="blogPostWrapFeatured">featured</div>
-            <h1 class="display-4">Lorem Ipsum</h1>
-            <div class="blogPostDate">February 04</div>
-            <p class="lead my-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non velit diam. Praesent metus velit, mollis in metus quis, venenatis eleifend velit. Quisque molestie, metus quis rutrum scelerisque, e...</p>
-            <p class="lead mb-0">
-                <a class="font-weight-bold" href="/Blog/2" target="_blank">Continue reading...</a>
-            </p>
+    @if (Model.featuredPost != null)
+    {
+        <div class="jumbotron p-3 p-md-5 text-white rounded bg-darker">
+            <div class="col-md-6 padding-sides">
+                <div class="blogPostWrapFeatured">featured</div>
+                <h1 class="display-4">@Model.featuredPost.Title</h1>
+                <div class="blogPostDate">@Model.featuredPost.Date.ToString("MMMM dd")</div>
+                <p class="lead my-3">@Html.Raw(Model.featuredPost.PostContent)</p>
+                <p class="lead mb-0">
+                    <a class="font-weight-bold" href="/Blog/Details/@Model.featuredPost.PostId" target="_blank">Continue reading...</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-0">
+                <a class="blogPostWrap" href="/Blog/Details/@Model.featuredPost.PostId" style="background-image: url(@Model.featuredPost.ImageUrl);"></a>
+            </div>
         </div>
-        <div class="col-md-6 px-0">
-            <a class="blogPostWrap" href="/Post/2" style="background-image: url('/Content/imgs/nothing.png');"></a>
-        </div>
-    </div>
+    }
 
     <div class="container-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">latest posts</h1>
         <p class="lead">lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nisi tellus, posuere in suscipit in, fermentum a odio. Ut varius finibus ex vel cursus. Curabitur justo nibh, volutpat eget justo quis, interdum ultricies elit. Aenean vulputate ultricies nibh.</p>
     </div>
-
+    
     <div class="row mb-2">
-        <div class="col-md-4">
-            <div class="postWrap postCenter card" style="width: auto;">
-                <a class="postWrapImage" href="/Blog/5" style="background-image: url('/Content/imgs/nothing.png');"></a>
-                <div class="d-flex flex-column align-items-start">
-                    <div class="postWrapTitle mb-0">
-                        Smart Title
-                        <span class="postTitleDot"></span>
+    @if (Model.lastPosts != null)
+    {
+        var cols = 12 / Model.lastPosts.Count;
+        foreach (var post in Model.lastPosts)
+        {
+            <div class="col-md-@cols">
+                <div class="postWrap postCenter card" style="width: auto;">
+                    <a class="postWrapImage" href="/Blog/Details/@post.PostId" style="background-image: url(@post.ImageUrl);"></a>
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="postWrapTitle mb-0">
+                            @post.Title
+                            <span class="postTitleDot"></span>
+                        </div>
+                        <span class="postWrapDesc">
+                            <p>@Html.Raw(post.PostContent)</p>
+                            <a class="btn important" href="/Blog/Details/@post.PostId" target="_blank">read more</a>
+                        </span>
                     </div>
-                    <span class="postWrapDesc">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non velit diam. Praesent metus velit, mollis in metus qu...</p>
-                        <a class="btn important" href="/Blog/5" target="_blank">read more</a>
-                    </span>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="postWrap postCenter card" style="width: auto;">
-                <a class="postWrapImage" href="/Blog/2" style="background-image: url('/Content/imgs/nothing.png');"></a>
-                <div class="d-flex flex-column align-items-start">
-                    <div class="postWrapTitle mb-0">
-                        Lorem Ipsum
-                        <span class="postTitleDot"></span>
-                    </div>
-                    <span class="postWrapDesc">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non velit diam. Praesent metus velit, mollis in metus qu...</p>
-                        <a class="btn important" href="/Blog/2" target="_blank">read more</a>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="postWrap postCenter card" style="width: auto;">
-                <a class="postWrapImage" href="/Blog/1" style="background-image: url('/Content/imgs/nothing.png');"></a>
-                <div class="d-flex flex-column align-items-start">
-                    <div class="postWrapTitle mb-0">
-                        Hello world
-                        <span class="postTitleDot"></span>
-                    </div>
-                    <span class="postWrapDesc">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non velit diam. Praesent metus velit, mollis in metus qu...</p>
-                        <a class="btn important" href="/Blog/1" target="_blank">read more</a>
-                    </span>
-                </div>
-            </div>
-        </div>
+        }
+    }
     </div>
 </div>

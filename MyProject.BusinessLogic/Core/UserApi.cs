@@ -149,5 +149,32 @@ namespace MyProject.BusinessLogic
 
             return user;
         }
-	}
+
+        internal void UserNewMail(int id, string email)
+        {
+            using (var db = new UserContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.Id == id);
+                if (user != null)
+                {
+                    user.Email = email;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        internal void UserNewPassword(int id, string oldPass, string pass)
+        {
+            using (var db = new UserContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.Id == id && u.Password == oldPass);
+                if (user != null)
+                {
+                    user.Password = pass;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+    }
 }

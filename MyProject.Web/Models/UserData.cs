@@ -10,5 +10,8 @@ namespace MyProject.Web.Models
 		public URole Level { get; set; }
 		public string AvatarUrl { get; set; }
 		public DateTime RegisterDate { get; set; }
-	}
+
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
 }

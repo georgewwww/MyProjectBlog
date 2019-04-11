@@ -1,6 +1,11 @@
-﻿@model IEnumerable<MyProject.Domain.Entities.BlogEntity>
+﻿@using System.Web.Optimization
+@using MyProject.Web.Extension
+@model IEnumerable<MyProject.Domain.Entities.BlogEntity>
 @{
     ViewBag.Title = "Blog";
+}
+@{
+    var user = System.Web.HttpContext.Current.GetMySessionObject();
 }
 
 <div class="tabPageHeader">
@@ -14,21 +19,21 @@
         </div>
     </div>
 </div>
-@if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
+@if (user != null && user.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
 {
-    <div class="addPostTypeWrap">
-        <a href="/Blog/Create" class="addPostTypeCont">
-            <div class="iutuCont">
-                <div class="iutuThumb"><i class="fas fa-plus"></i></div>
-                <div class="iutuInfo">
-                    <div class="iutuiInstr">add new post</div>
-                    <div class="iutuiExtWrap">
-                        <div class="iutuiewTitle">again something new?</div>
-                    </div>
+<div class="addPostTypeWrap">
+    <a href="/Blog/Create" class="addPostTypeCont">
+        <div class="iutuCont">
+            <div class="iutuThumb"><i class="fas fa-plus"></i></div>
+            <div class="iutuInfo">
+                <div class="iutuiInstr">add new post</div>
+                <div class="iutuiExtWrap">
+                    <div class="iutuiewTitle">again something new?</div>
                 </div>
             </div>
-        </a>
-    </div>
+        </div>
+    </a>
+</div>
 }
 
 <div class="blogPosts">
@@ -39,22 +44,22 @@
                 foreach (var post in Model)
                 {
                     <div class="blogPostCont" id="post__@post.PostId">
-                        <div class="bpcCover @(ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0 ? "postAdminPanel" : "") " style="background-image: url(@(post.ImageUrl != null ? post.ImageUrl : "'/Resources/nothing.png'"));">
-                            @if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
+                        <div class="bpcCover @(user != null && user.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0 ? "postAdminPanel" : "") " style="background-image: url(@(post.ImageUrl != null ? post.ImageUrl : "'/Resources/nothing.png'"));">
+                            @if (user != null && user.Level.CompareTo(MyProject.Domain.Enums.URole.Moderator) >= 0)
                             {
-                                <a href="#" title="edit post" onclick="EditPost(@post.PostId)"><i class="far fa-edit"></i></a>
-                                if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) == 0)
+                                <a href='javascript:void();' title="edit post" onclick="EditPost(@post.PostId)"><i class="far fa-edit"></i></a>
+                                if (user.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) == 0)
                                 {
-                                    <a href="#" title="delete post" onclick="ConfirmDelete(@post.PostId)"><i class="far fa-trash-alt"></i></a>
+                                    <a href='javascript:void();' title="delete post" onclick="DeletePost(@post.PostId)"><i class="far fa-trash-alt"></i></a>
                                 }
                             }
                         </div>
                         <div class="bpcTitle">
-                            @Html.ActionLink(post.Title, "Posts", new { PostId = post.PostId })
+                            @Html.ActionLink(post.Title, "Details", new { id = post.PostId })
                         </div>
                         <div class="bpcStats">
                             <div class="bpcsLeft">
-                                <div class="bpcDate">@Html.DisplayFor(modelDate => post.Date)</div>
+                                <div class="bpcDate">@post.Date.ToString("MMMM dd")</div>
                             </div>
                             <div class="bpcsRight">
                                 <div class="bpcsrStat">
@@ -66,7 +71,8 @@
                         </div>
                     </div>
                 }
-            } else
+            }
+            else
             {
                 <h2>
                     No entries found
@@ -76,7 +82,7 @@
     </div>
     <input type="hidden" id="hiddenPostId" />
 
-    <div class="blogPostModal modal fade" id="confirmModal">
+    <div class="blogPostModal modal fade show" id="confirmModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -90,12 +96,12 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-                    <button type="button" class="btn primary" onclick="DeletePost()">Confirm</button>
+                    <button type="button" class="btn primary" onclick="DeleteWithId()">Confirm</button>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div class="blogPostModal modalPostEditor modal fade" id="editModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,8 +111,45 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="editModalDiv"></div>
+                <div class="modal-body" id="editModalDiv">
+                </div>
             </div>
         </div>
     </div>
 </div>
+@section scripts{  
+    <script>
+        var DeletePost = function (postId) {
+            $("#hiddenPostId").val(postId);
+            $("#confirmModal").modal('show');
+        }
+
+        var EditPost = function (postId) {
+            var url = "/Blog/Edit/" + postId;
+            $("#editModalDiv").load(url,
+                function() {
+                    $("#editModal").modal('show');
+                });
+        }
+
+        var DeleteWithId = function () {
+            var postId = $("#hiddenPostId").val();
+
+            $.ajax({
+                type: "Post",
+                url: "/Blog/Delete",
+                data: { PostId: postId},
+                success: function (response) {
+                    if (response == false) {
+                        alert("Error");
+                    } else {
+                        alert("Successfuly deleted");
+                        window.location.href = "/Blog";
+                    }
+                }
+            });
+        };
+    </script>
+
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")  
+}  

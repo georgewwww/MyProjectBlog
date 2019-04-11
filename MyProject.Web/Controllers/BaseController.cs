@@ -56,5 +56,27 @@ namespace MyProject.Web.Controllers
 			}
 			return new UserData();
 		}
+
+        public void SetEmail(string email)
+        {
+            SessionStatus();
+            if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
+            {
+                var user = System.Web.HttpContext.Current.GetMySessionObject();
+
+                _session.SetUserEmail(user.Id, email);
+            }
+        }
+
+        public void SetPassword(string oldPass, string pass)
+        {
+            SessionStatus();
+            if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
+            {
+                var user = System.Web.HttpContext.Current.GetMySessionObject();
+
+                _session.SetUserPassword(user.Id, oldPass, pass);
+            }
+        }
     }
 }

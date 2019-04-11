@@ -159,7 +159,6 @@
         var content = document.querySelector(".contentText").innerHTML;
 
         data = data + '&PostContent=' + content;
-
         $.ajax({
             type: "POST",
             url: "/Blog/Create",

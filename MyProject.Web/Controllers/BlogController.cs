@@ -7,6 +7,7 @@ using MyProject.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -25,27 +26,20 @@ namespace MyProject.Web.Controllers
 		// GET: Blog
 		public ActionResult Index()
         {
-			var user = GetUser();
-			ViewBag.Username = user.Username;
-			ViewBag.Level = user.Level;
-
             return View(_blog.GetAllPosts());
         }
 
         // GET: Blog/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            _blog.IncreasePostViews(id);
+            return View(_blog.GetPostById(id));
         }
 
 		// GET: Blog/Create
 		[EditorMod]
 		public ActionResult Create()
 		{
-			var user = GetUser();
-			ViewBag.Username = user.Username;
-			ViewBag.Level = user.Level;
-
 			return View();
         }
 
@@ -57,9 +51,9 @@ namespace MyProject.Web.Controllers
 			if (post.Title == null || post.PostContent == null)
 				return View();
 
+            post.PostContent = HttpUtility.HtmlDecode(post.PostContent);
 			var user = System.Web.HttpContext.Current.GetMySessionObject();
-			ViewBag.Username = user.Username;
-			ViewBag.Level = user.Level;
+
 			try
 			{
 				var p = Mapper.Map<BlogEntity>(post);
@@ -74,58 +68,51 @@ namespace MyProject.Web.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                throw ex;
             }
         }
 
 		// GET: Blog/Edit/5
 		[EditorMod]
-		public ActionResult Edit(int id)
+		public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var model = _blog.GetPostById(Int32.Parse(id.ToString()));
+            return PartialView("_EditPost", model);
         }
 
-		// POST: Blog/Edit/5
-		[EditorMod]
-		[HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+		// POST: Blog/Edit/{Model}
+        [EditorMod]
+        [HttpPost]
+        public ActionResult Edit(BlogEntity model)
         {
+            if (model == null)
+                return RedirectToAction("Index");
             try
             {
-                // TODO: Add update logic here
+                var result = _blog.TryEditPost(model);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                throw ex;
             }
-        }
-
-        // GET: Blog/Delete/5
-		[AdminMod]
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: Blog/Delete/5
 		[AdminMod]
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public JsonResult Delete(int postId)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            var result = _blog.TryDeletePost(postId);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

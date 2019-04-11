@@ -1,0 +1,57 @@
+﻿@model MyProject.Domain.Entities.BlogEntity
+@{
+    ViewBag.Title = "Post Details";
+}
+@if (Model != null)
+{
+    <div class="blogPostPageCont">
+        <div class="mainWrap">
+            <div class="bppTop">
+                <div class="bpptTitle">@Model.Title</div>
+            </div>
+            <div class="bppCover" style="background-image: url(@Model.ImageUrl);"></div>
+            <div class="bppContentCont">
+                <div class="bppCCAuthorWrap">
+                    <div class="bppccaAuthorInfo">
+                        <div class="bpcsAuthor" style="background-image: url(@Model.AuthorAvatar);"></div>
+                        <div class="bppccaName"><span>by</span> @Model.PostAuthor</div>
+                    </div>
+                </div>
+                <div class="bppCCPostWrap" style="">
+                    <div class="bppCCPostRN">
+                        <div class="bppCCPost">
+                            <div class="bppCCPostStats">
+                                <div class="bppCCPostStat">@Model.Date.ToString("MMMM dd, yyyy")</div>
+                                <div class="bppCCPostStat">@Model.Views views</div>
+                            </div>
+                            <div class="contentText bppCCPostCont">
+                                @Html.Raw(Model.PostContent)
+                                <div style="text-align: left;"><br></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="commentsCont">
+                        <div class="commentsCount">0 comments</div>
+                        <div class="commentPostInactive">
+                            <div class="commentPIAvt" style="background-image: url(Resources/default_avatar.png);"></div>
+                            <div class="btn disabled primary">comment</div>
+                        </div>
+                        <div class="commentsWrap" style="display: none;">
+                            <div class="commentItem">
+                                <div class="commentItemAvatar" style="background-image: url('Resources/default_avatar.png');"></div>
+                                <div class="commentItemContentWrap">
+                                    <div class="cicwTop">
+                                        <div class="cicwTAuthorName">test</div>
+                                        <div class="cicwTPostDate">January 1</div>
+                                        <div class="cicwTReply">reply</div>
+                                    </div>
+                                    <div class="cicwContent">test 123</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

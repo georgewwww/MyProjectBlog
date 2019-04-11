@@ -1,18 +1,24 @@
-﻿<button class="navbar-toggler customNavBar" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+﻿@using MyProject.Web.Extension
+@{
+    var user = System.Web.HttpContext.Current.GetMySessionObject();
+}
+<button class="navbar-toggler customNavBar" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>
 <div class="collapse navbar-collapse" id="navbarContent">
     <ul class="navbar-nav headerNavBar mr-auto">
-        <li class="nav-item headerNavLink @((ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Home") ? "active" : "")">
+        <li class="nav-item headerNavLink @((ViewContext.RouteData.Values["Action"].ToString() == "Index" 
+                                             && ViewContext.RouteData.Values["Controller"].ToString() == "Home") ? "active" : "")">
             <a class="nav-link" href="/">home</a>
         </li>
-        <li class="nav-item headerNavLink">
+        <li class="nav-item headerNavLink @((ViewContext.RouteData.Values["Controller"].ToString() == "Blog") ? "active" : "")">
             <a class="nav-link" href="/Blog">blog</a>
         </li>
         <li class="nav-item headerNavLink">
             <a class="nav-link" href="#">services</a>
         </li>
-        <li class="nav-item headerNavLink">
+        <li class="nav-item headerNavLink @((ViewContext.RouteData.Values["Action"].ToString() == "About" 
+                                             &&ViewContext.RouteData.Values["Controller"].ToString() == "Home") ? "active" : "")">
             <a class="nav-link" href="/Home/About">about</a>
         </li>
     </ul>
@@ -36,13 +42,13 @@
 
 <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
     <li class="nav-item dropdown">
-        @if (ViewBag.Username != null)
+        @if (user != null)
         {
             <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @ViewBag.Username
+                @user.Username
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                @if (ViewBag.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) == 0)
+                @if (user.Level.CompareTo(MyProject.Domain.Enums.URole.Administrator) == 0)
                 {
                     <a class="dropdown-item" href="/Admin"><b>Admin Panel</b></a>
                     <div class="dropdown-divider"></div>

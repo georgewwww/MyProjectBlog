@@ -21,10 +21,18 @@ namespace MyProject.BusinessLogic
 		public UserEntity GetUserByCookie(string apiCookieValue)
 		{
 			return UserCookie(apiCookieValue);
-		}
-		public UActionResp UserRegister(URegisterData data)
-		{
-			return UserRegisterAction(data);
-		}
-	}
+        }
+        public UActionResp UserRegister(URegisterData data)
+        {
+            return UserRegisterAction(data);
+        }
+        public void SetUserEmail(int id, string email)
+        {
+            UserNewMail(id, email);
+        }
+        public void SetUserPassword(int id, string oldPass, string pass)
+        {
+            UserNewPassword(id, oldPass, pass);
+        }
+    }
 }

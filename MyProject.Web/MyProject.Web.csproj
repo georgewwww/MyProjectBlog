@@ -212,7 +212,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\IndexPostsViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
+    <Compile Include="Models\SettingsViewModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\UserRegister.cs" />
@@ -233,6 +235,8 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Blog\Create.cshtml" />
+    <Content Include="Views\Blog\Details.cshtml" />
+    <Content Include="Views\Shared\_EditPost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

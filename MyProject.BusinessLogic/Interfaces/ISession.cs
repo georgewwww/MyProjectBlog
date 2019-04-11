@@ -10,5 +10,7 @@ namespace MyProject.BusinessLogic
 		UActionResp UserRegister(URegisterData data);
 		HttpCookie GenCookie(string username);
 		UserEntity GetUserByCookie(string apiCookieValue);
-	}
+        void SetUserEmail(int id, string email);
+        void SetUserPassword(int id, string oldPass, string pass);
+    }
 }

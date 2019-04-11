@@ -6,24 +6,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyProject.BusinessLogic;
+using MyProject.Domain.Entities;
 
 namespace MyProject.Web.Controllers
 {
     public class HomeController : BaseController
     {
+        private readonly IBlog _blog;
+
+        public HomeController()
+        {
+            var bl = new InstanceBL();
+            _blog = bl.GetBlogBL();
+        }
+
         // GET: Home
         public ActionResult Index()
         {
 			SessionStatus();
 
-			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
-			{
-				var user = System.Web.HttpContext.Current.GetMySessionObject();
-				ViewBag.Username = user.Username;
-				ViewBag.Level = user.Level;
-			}
+            var model = new IndexPostsViewModel();
+            model.featuredPost = _blog.GetFeaturedPost();
+            model.lastPosts = _blog.GetLastPosts();
 
-			return View();
+			return View(model);
         }
 
 		public new ActionResult Profile()
@@ -33,8 +40,6 @@ namespace MyProject.Web.Controllers
 			{
 				var entity = System.Web.HttpContext.Current.GetMySessionObject();
 				var u = Mapper.Map<UserData>(entity);
-				ViewBag.Username = u.Username;
-				ViewBag.Level = u.Level;
 
 				return View(u);
 			} else
@@ -42,13 +47,21 @@ namespace MyProject.Web.Controllers
 				return RedirectToAction("Index", "Home");
 			}
 		}
-		
-		public ActionResult About()
-		{
-			var u = GetUser();
-			ViewBag.Username = u.Username;
-			ViewBag.Level = u.Level;
 
+        public ActionResult SavePreferences(UserData user)
+        {
+            SetEmail(user.Email);
+            return RedirectToAction("Profile");
+        }
+
+        public ActionResult SavePassword(UserData user)
+        {
+            SetPassword(user.OldPassword, user.NewPassword);
+            return RedirectToAction("Profile");
+        }
+
+        public ActionResult About()
+		{
 			return View();
 		}
     }

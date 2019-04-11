@@ -73,11 +73,11 @@
                             <div class="profilePassCont">
                                 <div class="profilePassInputWrap">
                                     <div class="ppiTitle">current password</div>
-                                    <input id="Password" name="Password" type="password" value="">
+                                    @Html.TextBoxFor(model => model.OldPassword, new { @type = "password", id = "Password", name = "Password"})
                                 </div>
                                 <div class="profilePassInputWrap">
                                     <div class="ppiTitle">new password</div>
-                                    <input id="NewPassword" name="NewPassword" type="password" value="">
+                                    @Html.TextBoxFor(model => model.NewPassword, new { @type = "password", id = "NewPassword", name = "NewPassword" })
                                 </div>
                                 <div class="profilePassInputWrap">
                                     <div class="ppiTitle">repeat new password</div>
@@ -101,18 +101,18 @@
 
         $.ajax({
             type: "Post",
-            url: "/EditProfile",
+            url: "/SavePreferences",
             data: data,
             success: function (response) {
                 if (response == "fail") {
                     alert("Error");
                 } else if (response == "success") {
                     alert("Successfuly edited");
-                    window.location.href = "/Profile";
+                    window.location.href = "/Home/Profile";
                 }
             }
-        })
-    }
+        });
+    };
 
     var EditPassword = function () {
         var data = $("#editPasswordForm").serialize();
@@ -124,17 +124,17 @@
 
         $.ajax({
             type: "Post",
-            url: "/EditProfilePass",
+            url: "/SavePassword",
             data: data,
             success: function (response) {
                 if (response == "fail") {
                     alert("Error");
                 } else if (response == "success") {
                     alert("Successfuly edited");
-                    window.location.href = "/Profile";
+                    window.location.href = "/Home/Profile";
                 }
             }
-        })
-    }
+        });
+    };
 </script>
 

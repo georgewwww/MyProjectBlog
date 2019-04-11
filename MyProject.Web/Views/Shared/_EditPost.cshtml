@@ -1,0 +1,40 @@
+﻿@model MyProject.Domain.Entities.BlogEntity
+
+<form id="postEditorForm" class="postEditCont">
+    @Html.HiddenFor(p => p.PostId)
+    <div class="postFormInputWrap">
+        <div class="pefTitle">post image preview</div>
+        <img class="pefPreview" src="@Model.ImageUrl">
+        <input id="ImageUrl" name="ImageUrl" placeholder="link to image" type="text" value="@Model.ImageUrl">
+    </div>
+    <div class="postFormInputWrap">
+        <div class="pefTitle">post title</div>
+        <input id="PostTitle" name="Title" placeholder="title of post" type="text" value="@Model.Title">
+    </div>
+    <div class="postFormInputWrap">
+        <div class="pefTitle">all content</div>
+        <textarea cols="20" id="PostContent" name="PostContent" placeholder="post content" rows="2">@Model.PostContent</textarea>
+    </div>
+    <div class="postFormBtns">
+        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+        <a href="#" id="btnSubmit" class="btn primary">Save</a>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            var data = $("#postEditorForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/Blog/Edit",
+                data: data,
+                success: function () {
+                    $("#editModal").modal("hide");
+                    window.location.href = "/Blog";
+                }
+            });
+        });
+    })
+</script>
