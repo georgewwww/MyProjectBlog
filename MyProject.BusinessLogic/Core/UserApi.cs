@@ -2,11 +2,8 @@
 using MyProject.Domain.Entities;
 using MyProject.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using AutoMapper;
 using MyProject.Domain.Enums;
@@ -16,6 +13,17 @@ namespace MyProject.BusinessLogic
 {
 	public class UserApi
 	{
+		private readonly IMapper _mapper;
+		public UserApi()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<UsersDbTable, UserEntity>().ReverseMap();
+				cfg.CreateMap<URegisterData, UsersDbTable>().ReverseMap();
+			});
+			_mapper = new Mapper(config);
+		}
+
 		// Gen an response from login action
 		internal UActionResp UserLoginAction(ULoginData data)
 		{
@@ -62,7 +70,7 @@ namespace MyProject.BusinessLogic
 				result = db.Users.FirstOrDefault(u => u.Username == data.Username);
 				if (result == null)
 				{
-					var newUser = Mapper.Map<UsersDbTable>(data);
+					var newUser = _mapper.Map<UsersDbTable>(data);
 					newUser.Level = URole.User;
 					newUser.AvatarUrl = "/Content/imgs/default_avatar.png";
 
@@ -145,7 +153,7 @@ namespace MyProject.BusinessLogic
             }
 
             if (curentUser == null) return null;
-            var user = Mapper.Map<UserEntity>(curentUser);
+            var user = _mapper.Map<UserEntity>(curentUser);
 
             return user;
         }

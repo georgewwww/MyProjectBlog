@@ -1,20 +1,19 @@
 ﻿using MyProject.Web.Extension;
 using MyProject.BusinessLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using MyProject.Web.Models;
 
 namespace MyProject.Web.Controllers
 {
     public class BaseController : Controller
     {
-		private readonly ISession _session;
+	    public readonly Mapper _mapper;
+	    private readonly ISession _session;
        
 		public BaseController()
 		{
+			_mapper = new Mapper(AutoMapperConfig.Initialize());
 			var bl = new InstanceBL();
 			_session = bl.GetSessionBL();
 		}

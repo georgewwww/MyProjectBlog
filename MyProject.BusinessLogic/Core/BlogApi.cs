@@ -1,18 +1,25 @@
 ﻿using AutoMapper;
 using MyProject.BusinessLogic.DbModel;
 using MyProject.Domain.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace MyProject.BusinessLogic
 {
 	public class BlogApi
 	{
+		private readonly IMapper _mapper;
+		public BlogApi()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<BlogEntity, BlogDbTable>().ReverseMap();
+			});
+
+			_mapper = new Mapper(config);
+		}
+
         internal BlogEntity PostById(int id)
         {
             BlogDbTable currentPost;
@@ -23,7 +30,7 @@ namespace MyProject.BusinessLogic
                     return null;
             }
 
-            var post = Mapper.Map<BlogEntity>(currentPost);
+            var post = _mapper.Map<BlogEntity>(currentPost);
             var author = GetUserByPosterId(post.UserId);
             post.PostAuthor = author.Username;
             post.AuthorAvatar = author.AvatarUrl;
@@ -33,15 +40,18 @@ namespace MyProject.BusinessLogic
 
         internal BlogEntity FeaturedPost()
 		{
-			BlogDbTable currentPost;
+			BlogDbTable currentPost = null;
 			using (var db = new BlogContext())
 			{
-				currentPost = db.Posts.OrderByDescending(p => p.Views).First(x => x.IsDeleted == 0);
-            }
+				if (db.Posts.Any())
+				{
+					currentPost = db.Posts.OrderByDescending(p => p.Views).First(x => x.IsDeleted == 0);
+				}
+			}
 
 			if (currentPost == null) return null;
 
-			var post = Mapper.Map<BlogEntity>(currentPost);
+			var post = _mapper.Map<BlogEntity>(currentPost);
 			var author = GetUserByPosterId(post.UserId);
 			post.PostAuthor = author.Username;
 			post.AuthorAvatar = author.AvatarUrl;
@@ -65,7 +75,7 @@ namespace MyProject.BusinessLogic
 			var posts = new List<BlogEntity>();
 			foreach(var p in blogPosts)
 			{
-				var post = Mapper.Map<BlogEntity>(p);
+				var post = _mapper.Map<BlogEntity>(p);
 				var author = GetUserByPosterId(p.UserId);
 				post.PostAuthor = author.Username;
 				post.AuthorAvatar = author.AvatarUrl;
@@ -89,7 +99,7 @@ namespace MyProject.BusinessLogic
 			var posts = new List<BlogEntity>();
 			foreach (var p in blogPosts)
 			{
-				var post = Mapper.Map<BlogEntity>(p);
+				var post = _mapper.Map<BlogEntity>(p);
 				var author = GetUserByPosterId(p.UserId);
 				post.PostAuthor = author.Username;
 				post.AuthorAvatar = author.AvatarUrl;
@@ -104,7 +114,7 @@ namespace MyProject.BusinessLogic
             var user = GetUserByPosterId(userId);
             if (post != null && user != null)
             {
-                var p = Mapper.Map<BlogDbTable>(post);
+                var p = _mapper.Map<BlogDbTable>(post);
 
                 using (var db = new BlogContext())
                 {
@@ -140,17 +150,14 @@ namespace MyProject.BusinessLogic
 
         internal bool DeletePost(int postId)
         {
-            if (postId != null)
+	        if (postId < 0) return false;
+	        using (var db = new BlogContext())
             {
-                using (var db = new BlogContext())
-                {
-                    var post = db.Posts.First(p => p.PostId == postId);
-                    post.IsDeleted = 1;
-                    db.SaveChanges();
-                    return true;
-                }
+	            var post = db.Posts.First(p => p.PostId == postId);
+	            post.IsDeleted = 1;
+	            db.SaveChanges();
+	            return true;
             }
-            return false;
         }
 
         internal bool PostViewed(int id)

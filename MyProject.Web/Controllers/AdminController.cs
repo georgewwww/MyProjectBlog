@@ -12,7 +12,7 @@ namespace MyProject.Web.Controllers
 {
 	[AdminMod]
 	public class AdminController : BaseController
-    {
+	{
 		// GET: Admin
 		public ActionResult Index()
         {
@@ -21,7 +21,7 @@ namespace MyProject.Web.Controllers
 			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
 			{
 				var user = System.Web.HttpContext.Current.GetMySessionObject();
-				var u = Mapper.Map<UserData>(user);
+				var u = _mapper.Map<UserData>(user);
 
 				return View(u);
 			}

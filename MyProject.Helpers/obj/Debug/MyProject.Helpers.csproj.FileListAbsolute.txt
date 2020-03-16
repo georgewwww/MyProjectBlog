@@ -10,3 +10,7 @@ C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Helpers\obj
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Helpers\obj\Debug\MyProject.Helpers.csproj.CoreCompileInputs.cache
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Helpers\obj\Debug\MyProject.Helpers.dll
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Helpers\obj\Debug\MyProject.Helpers.pdb
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Helpers\bin\Debug\MyProject.Helpers.dll
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Helpers\bin\Debug\MyProject.Helpers.pdb
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Helpers\obj\Debug\MyProject.Helpers.dll
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Helpers\obj\Debug\MyProject.Helpers.pdb

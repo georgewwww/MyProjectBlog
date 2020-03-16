@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using MyProject.Domain.Entities;
 using MyProject.Web.Models;
 
@@ -10,9 +6,9 @@ namespace MyProject.Web
 {
 	public class AutoMapperConfig
 	{
-		public static void Initialize()
+		public static MapperConfiguration Initialize()
 		{
-			Mapper.Initialize(cfg =>
+			var config = new MapperConfiguration(cfg =>
 			{
 				cfg.CreateMap<UserLogin, ULoginData>();
 				cfg.CreateMap<UsersDbTable, UserEntity>();
@@ -23,6 +19,7 @@ namespace MyProject.Web
 				cfg.CreateMap<BlogEntity, BlogDbTable>();
 				cfg.CreateMap<PostViewModel, BlogEntity>();
 			});
+			return config;
 		}
 	}
 }

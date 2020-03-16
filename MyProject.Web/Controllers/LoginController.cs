@@ -13,11 +13,13 @@ using MyProject.Web.Controllers.Attributes;
 namespace MyProject.Web.Controllers
 {
     public class LoginController : Controller
-    {
+	{
+		public readonly Mapper _mapper;
 		private readonly ISession _session;
 		
 		public LoginController()
 		{
+			_mapper = new Mapper(AutoMapperConfig.Initialize());
 			var bl = new InstanceBL();
 			_session = bl.GetSessionBL();
 		}
@@ -35,7 +37,7 @@ namespace MyProject.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var data = Mapper.Map<ULoginData>(login);
+				var data = _mapper.Map<ULoginData>(login);
 				data.LoginDateTime = DateTime.Now;
 
 				var userLogin = _session.UserLogin(data);

@@ -13,11 +13,13 @@ namespace MyProject.Web.Controllers
 {
 	[GuestMod]
     public class RegisterController : Controller
-    {
+	{
+		public readonly Mapper _mapper;
 		private readonly ISession _session;
 
 		public RegisterController()
 		{
+			_mapper = new Mapper(AutoMapperConfig.Initialize());
 			var bl = new InstanceBL();
 			_session = bl.GetSessionBL();
 		}
@@ -40,7 +42,7 @@ namespace MyProject.Web.Controllers
 					return View();
 				}
 
-				var data = Mapper.Map<URegisterData>(user);
+				var data = _mapper.Map<URegisterData>(user);
 				data.RegisterDate = DateTime.Now;
 
 				var registerResponse = _session.UserRegister(data);

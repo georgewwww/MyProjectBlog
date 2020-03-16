@@ -16,3 +16,11 @@ C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csproj.CopyComplete
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.dll
 C:\Users\gceapchii\OneDrive - ENDAVA\Desktop\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.pdb
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Domain.dll
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Domain.pdb
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Helpers.dll
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\bin\Debug\MyProject.Helpers.pdb
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csprojAssemblyReference.cache
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.csproj.CopyComplete
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.dll
+C:\# University\# TSoft\lab3\MyProjectBlog\MyProject.Domain\obj\Debug\MyProject.Domain.pdb

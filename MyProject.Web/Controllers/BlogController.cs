@@ -56,7 +56,7 @@ namespace MyProject.Web.Controllers
 
 			try
 			{
-				var p = Mapper.Map<BlogEntity>(post);
+				var p = _mapper.Map<BlogEntity>(post);
 				if (p.ImageUrl == null)
 					p.ImageUrl = "/Content/imgs/nothing.png";
 				p.AuthorAvatar = user.AvatarUrl;

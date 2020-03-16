@@ -37,7 +37,7 @@
     </div>
     
     <div class="row mb-2">
-    @if (Model.lastPosts != null)
+    @if (Model.lastPosts.Any())
     {
         var cols = 12 / Model.lastPosts.Count;
         foreach (var post in Model.lastPosts)

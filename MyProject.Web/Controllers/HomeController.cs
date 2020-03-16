@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using MyProject.Web.Extension;
 using MyProject.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MyProject.BusinessLogic;
-using MyProject.Domain.Entities;
 
 namespace MyProject.Web.Controllers
 {
@@ -16,7 +11,7 @@ namespace MyProject.Web.Controllers
         private readonly IBlog _blog;
 
         public HomeController()
-        {
+		{
             var bl = new InstanceBL();
             _blog = bl.GetBlogBL();
         }
@@ -39,7 +34,7 @@ namespace MyProject.Web.Controllers
 			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
 			{
 				var entity = System.Web.HttpContext.Current.GetMySessionObject();
-				var u = Mapper.Map<UserData>(entity);
+				var u = _mapper.Map<UserData>(entity);
 
 				return View(u);
 			} else
