@@ -1,19 +1,15 @@
-﻿using AutoMapper;
-using MyProject.BusinessLogic;
+﻿using MyProject.BusinessLogic;
 using MyProject.Domain.Entities;
 using MyProject.Web.Controllers.Attributes;
 using MyProject.Web.Extension;
 using MyProject.Web.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MyProject.Web.Controllers
 {
-    public class BlogController : BaseController
+	public class BlogController : BaseController
 	{
 		private readonly IBlog _blog;
 
@@ -56,13 +52,10 @@ namespace MyProject.Web.Controllers
 
 			try
 			{
-				var p = _mapper.Map<BlogEntity>(post);
+				var p = _mapper.Map<PostEntity>(post);
 				if (p.ImageUrl == null)
 					p.ImageUrl = "/Content/imgs/nothing.png";
-				p.AuthorAvatar = user.AvatarUrl;
 				p.Date = DateTime.Now;
-				p.PostAuthor = user.Username;
-				p.UserId = user.Id;
 
 				_blog.TryAddPost(user.Id, p);
 
@@ -90,7 +83,7 @@ namespace MyProject.Web.Controllers
 		// POST: Blog/Edit/{Model}
         [EditorMod]
         [HttpPost]
-        public ActionResult Edit(BlogEntity model)
+        public ActionResult Edit(PostEntity model)
         {
             if (model == null)
                 return RedirectToAction("Index");

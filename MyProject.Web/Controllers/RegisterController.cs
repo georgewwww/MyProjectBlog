@@ -4,9 +4,6 @@ using MyProject.Domain.Entities;
 using MyProject.Web.Controllers.Attributes;
 using MyProject.Web.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MyProject.Web.Controllers
@@ -32,7 +29,7 @@ namespace MyProject.Web.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Index(UserRegister user)
+		public ActionResult Index(UserRegisterModel user)
 		{
 			if (ModelState.IsValid)
 			{

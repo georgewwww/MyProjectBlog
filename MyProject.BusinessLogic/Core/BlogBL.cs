@@ -1,31 +1,26 @@
-﻿using MyProject.BusinessLogic;
-using MyProject.Domain.Entities;
-using System;
+﻿using MyProject.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyProject.BusinessLogic
 {
 	public class BlogBL : BlogApi, IBlog
     {
-        public BlogEntity GetPostById(int id) => PostById(id);
+        public PostEntity GetPostById(int id) => PostById(id);
 
-        public BlogEntity GetFeaturedPost() => FeaturedPost();
+        public PostEntity GetFeaturedPost() => FeaturedPost();
 
-		public List<BlogEntity> GetLastPosts() => LastPosts();
+		public List<PostEntity> GetLastPosts() => LastPosts();
 
-        public List<BlogEntity> GetAllPosts() => AllPosts();
+        public List<PostEntity> GetAllPosts() => AllPosts();
 
-        public bool TryEditPost(BlogEntity post)
+        public bool TryEditPost(PostEntity post)
         {
             return EditPost(post);
         }
 
         public bool TryDeletePost(int id) => DeletePost(id);
 
-        public bool TryAddPost(int userId, BlogEntity post)
+        public bool TryAddPost(int userId, PostEntity post)
 		{
 			return AddPost(userId, post);
 		}

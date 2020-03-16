@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\User\BlogDbTable.cs" />
-    <Compile Include="Entities\User\BlogEntity.cs" />
-    <Compile Include="Entities\User\SessionDbTable.cs" />
+    <Compile Include="Entities\Core\Post.cs" />
+    <Compile Include="Entities\User\PostEntity.cs" />
+    <Compile Include="Entities\Core\Session.cs" />
     <Compile Include="Entities\User\URegisterData.cs" />
-    <Compile Include="Entities\User\UserEnitity.cs" />
-    <Compile Include="Entities\User\UsersDbTable.cs" />
+    <Compile Include="Entities\User\UserEntity.cs" />
+    <Compile Include="Entities\Core\User.cs" />
     <Compile Include="Enums\URole.cs" />
     <Compile Include="Entities\User\ULoginData.cs" />
     <Compile Include="Entities\User\UActionResp.cs" />

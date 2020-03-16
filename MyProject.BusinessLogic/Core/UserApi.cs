@@ -1,5 +1,4 @@
-﻿using MyProject.BusinessLogic.DbModel;
-using MyProject.Domain.Entities;
+﻿using MyProject.Domain.Entities;
 using MyProject.Helpers;
 using System;
 using System.Data.Entity;
@@ -8,6 +7,7 @@ using System.Web;
 using AutoMapper;
 using MyProject.Domain.Enums;
 using System.Data.Entity.Validation;
+using MyProject.Domain.Entities.Core;
 
 namespace MyProject.BusinessLogic
 {
@@ -18,8 +18,8 @@ namespace MyProject.BusinessLogic
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<UsersDbTable, UserEntity>().ReverseMap();
-				cfg.CreateMap<URegisterData, UsersDbTable>().ReverseMap();
+				cfg.CreateMap<User, UserEntity>().ReverseMap();
+				cfg.CreateMap<URegisterData, User>().ReverseMap();
 			});
 			_mapper = new Mapper(config);
 		}
@@ -27,9 +27,9 @@ namespace MyProject.BusinessLogic
 		// Gen an response from login action
 		internal UActionResp UserLoginAction(ULoginData data)
 		{
-			UsersDbTable result;
+			User result;
 
-			using (var db = new UserContext())
+			using (var db = new BlogContext())
 			{
 				result = db.Users.FirstOrDefault(u => u.Username == data.Username && u.Password == data.Password);
 			}
@@ -45,9 +45,9 @@ namespace MyProject.BusinessLogic
 		// Just logout the current user, if there is any
 		internal UActionResp UserLogoutAction(string cookie)
 		{
-			SessionDbTable result;
+			Session result;
 
-			using (var db = new SessionContext())
+			using (var db = new BlogContext())
 			{
 				result = db.Sessions.FirstOrDefault(s => s.CookieString == cookie);
 				if (result != null)
@@ -63,14 +63,14 @@ namespace MyProject.BusinessLogic
 		// Insert new entry of user from register page
 		internal UActionResp UserRegisterAction(URegisterData data)
 		{
-			UsersDbTable result;
+			User result;
 
-			using (var db = new UserContext())
+			using (var db = new BlogContext())
 			{
 				result = db.Users.FirstOrDefault(u => u.Username == data.Username);
 				if (result == null)
 				{
-					var newUser = _mapper.Map<UsersDbTable>(data);
+					var newUser = _mapper.Map<User>(data);
 					newUser.Level = URole.User;
 					newUser.AvatarUrl = "/Content/imgs/default_avatar.png";
 
@@ -104,17 +104,17 @@ namespace MyProject.BusinessLogic
 				Value = CookieGenerator.Create(username)
 			};
 
-			using (var db = new SessionContext())
+			using (var db = new BlogContext())
 			{
-				SessionDbTable curent;
+				Session curent;
 
-				curent = (from e in db.Sessions where e.Username == username select e).FirstOrDefault();
+				curent = db.Sessions.FirstOrDefault(u => u.Username == username);
 
 				if (curent != null)
 				{
 					curent.CookieString = apiCookie.Value;
 					curent.ExpireTime = DateTime.Now.AddDays(1);
-					using (var todo = new SessionContext())
+					using (var todo = new BlogContext())
 					{
 						todo.Entry(curent).State = EntityState.Modified;
 						todo.SaveChanges();
@@ -122,7 +122,7 @@ namespace MyProject.BusinessLogic
 				}
 				else
 				{
-					db.Sessions.Add(new SessionDbTable
+					db.Sessions.Add(new Session
 					{
 						Username = username,
 						CookieString = apiCookie.Value,
@@ -138,29 +138,23 @@ namespace MyProject.BusinessLogic
 		// Get the user data based on it's cookie
         internal UserEntity UserCookie(string cookie)
         {
-            SessionDbTable session;
-            UsersDbTable curentUser;
+            User curentUser;
 
-            using (var db = new SessionContext())
+            using (var db = new BlogContext())
             {
-                session = db.Sessions.FirstOrDefault(s => s.CookieString == cookie && s.ExpireTime > DateTime.Now);
-            }
+                var session = db.Sessions.FirstOrDefault(s => s.CookieString == cookie && s.ExpireTime > DateTime.Now);
+				if (session == null) return null;
 
-            if (session == null) return null;
-            using (var db = new UserContext())
-            {
-                curentUser = db.Users.FirstOrDefault(u => u.Username == session.Username);
-            }
-
-            if (curentUser == null) return null;
-            var user = _mapper.Map<UserEntity>(curentUser);
-
-            return user;
+				curentUser = db.Users.FirstOrDefault(u => u.Username == session.Username);
+				if (curentUser == null) return null;
+			}
+			
+            return _mapper.Map<UserEntity>(curentUser);
         }
 
         internal void UserNewMail(int id, string email)
         {
-            using (var db = new UserContext())
+            using (var db = new BlogContext())
             {
                 var user = db.Users.FirstOrDefault(u => u.Id == id);
                 if (user != null)
@@ -173,7 +167,7 @@ namespace MyProject.BusinessLogic
 
         internal void UserNewPassword(int id, string oldPass, string pass)
         {
-            using (var db = new UserContext())
+            using (var db = new BlogContext())
             {
                 var user = db.Users.FirstOrDefault(u => u.Id == id && u.Password == oldPass);
                 if (user != null)
@@ -183,6 +177,5 @@ namespace MyProject.BusinessLogic
                 }
             }
         }
-
     }
 }

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using MyProject.BusinessLogic.DbModel;
 using MyProject.Domain.Entities;
+using MyProject.Domain.Entities.Core;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -14,54 +15,45 @@ namespace MyProject.BusinessLogic
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<BlogEntity, BlogDbTable>().ReverseMap();
+				cfg.CreateMap<PostEntity, Post>().ReverseMap();
+				cfg.CreateMap<UserEntity, User>().ReverseMap();
 			});
 
 			_mapper = new Mapper(config);
 		}
 
-        internal BlogEntity PostById(int id)
+        internal PostEntity PostById(int id)
         {
-            BlogDbTable currentPost;
+            Post currentPost;
             using (var db = new BlogContext())
             {
-                currentPost = db.Posts.FirstOrDefault(x => x.PostId == id && x.IsDeleted == 0);
+				currentPost = db.Posts.Where(x => x.PostId == id && x.IsDeleted == 0).Include(p => p.User).SingleOrDefault();
                 if (currentPost == null)
                     return null;
             }
 
-            var post = _mapper.Map<BlogEntity>(currentPost);
-            var author = GetUserByPosterId(post.UserId);
-            post.PostAuthor = author.Username;
-            post.AuthorAvatar = author.AvatarUrl;
-
-            return post;
+            return _mapper.Map<PostEntity>(currentPost);
         }
 
-        internal BlogEntity FeaturedPost()
+        internal PostEntity FeaturedPost()
 		{
-			BlogDbTable currentPost = null;
+			Post currentPost = null;
 			using (var db = new BlogContext())
 			{
 				if (db.Posts.Any())
 				{
-					currentPost = db.Posts.OrderByDescending(p => p.Views).First(x => x.IsDeleted == 0);
+					currentPost = db.Posts.OrderByDescending(p => p.Views).Include(p => p.User).First(x => x.IsDeleted == 0);
 				}
 			}
 
 			if (currentPost == null) return null;
 
-			var post = _mapper.Map<BlogEntity>(currentPost);
-			var author = GetUserByPosterId(post.UserId);
-			post.PostAuthor = author.Username;
-			post.AuthorAvatar = author.AvatarUrl;
-			
-			return post;
+			return _mapper.Map<PostEntity>(currentPost);
 		}
 
-		internal List<BlogEntity> LastPosts()
+		internal List<PostEntity> LastPosts()
 		{
-			List<BlogDbTable> blogPosts;
+			List<Post> blogPosts;
 			using (var db = new BlogContext())
 			{
 				int toTake = db.Posts.Count() > 3 ? 3 : db.Posts.Count();
@@ -69,52 +61,35 @@ namespace MyProject.BusinessLogic
 					.OrderByDescending(p => p.PostId)
 					.Where(x => x.IsDeleted == 0)
 					.Take(toTake)
+					.Include(p => p.User)
 					.ToList();
 			}
-            
-			var posts = new List<BlogEntity>();
-			foreach(var p in blogPosts)
-			{
-				var post = _mapper.Map<BlogEntity>(p);
-				var author = GetUserByPosterId(p.UserId);
-				post.PostAuthor = author.Username;
-				post.AuthorAvatar = author.AvatarUrl;
-				posts.Add(post);
-			}
 
-			return posts;
+			return _mapper.Map<List<PostEntity>>(blogPosts);
 		}
 
-		internal List<BlogEntity> AllPosts()
+		internal List<PostEntity> AllPosts()
 		{
-			List<BlogDbTable> blogPosts;
+			List<Post> blogPosts;
 			using (var db = new BlogContext())
 			{
 				blogPosts = db.Posts
 					.OrderByDescending(p => p.PostId)
                     .Where(p => p.IsDeleted == 0)
+					.Include(p => p.User)
 					.ToList();
 			}
 
-			var posts = new List<BlogEntity>();
-			foreach (var p in blogPosts)
-			{
-				var post = _mapper.Map<BlogEntity>(p);
-				var author = GetUserByPosterId(p.UserId);
-				post.PostAuthor = author.Username;
-				post.AuthorAvatar = author.AvatarUrl;
-				posts.Add(post);
-			}
-
-			return posts;
+			return _mapper.Map<List<PostEntity>>(blogPosts);
 		}
 
-        internal bool AddPost(int userId, BlogEntity post)
+        internal bool AddPost(int userId, PostEntity post)
         {
             var user = GetUserByPosterId(userId);
             if (post != null && user != null)
             {
-                var p = _mapper.Map<BlogDbTable>(post);
+                var p = _mapper.Map<Post>(post);
+				p.User = user;
 
                 using (var db = new BlogContext())
                 {
@@ -126,7 +101,7 @@ namespace MyProject.BusinessLogic
             return false;
         }
 
-        internal bool EditPost(BlogEntity post)
+        internal bool EditPost(PostEntity post)
         {
             var result = PostExistById(post.PostId);
             if (result == true)
@@ -176,9 +151,9 @@ namespace MyProject.BusinessLogic
             return false;
         }
 
-        private UsersDbTable GetUserByPosterId(int id)
+        private User GetUserByPosterId(int id)
 		{
-			using (var db = new UserContext())
+			using (var db = new BlogContext())
 			{
 				return db.Users.SingleOrDefault(u => u.Id == id);
 			}

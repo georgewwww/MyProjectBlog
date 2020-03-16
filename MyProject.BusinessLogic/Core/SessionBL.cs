@@ -1,5 +1,4 @@
 ﻿using System.Web;
-using MyProject.BusinessLogic.DbModel;
 using MyProject.Domain.Entities;
 
 namespace MyProject.BusinessLogic

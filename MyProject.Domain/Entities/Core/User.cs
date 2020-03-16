@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MyProject.Domain.Enums;
 
-namespace MyProject.Domain.Entities
+namespace MyProject.Domain.Entities.Core
 {
-	public class UsersDbTable
+	public class User
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

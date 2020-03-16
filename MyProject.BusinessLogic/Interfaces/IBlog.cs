@@ -5,12 +5,12 @@ namespace MyProject.BusinessLogic
 {
 	public interface IBlog
     {
-        BlogEntity GetPostById(int id);
-        BlogEntity GetFeaturedPost();
-		List<BlogEntity> GetLastPosts();
-		List<BlogEntity> GetAllPosts();
-        bool TryAddPost(int userId, BlogEntity post);
-        bool TryEditPost(BlogEntity post);
+        PostEntity GetPostById(int id);
+        PostEntity GetFeaturedPost();
+		List<PostEntity> GetLastPosts();
+		List<PostEntity> GetAllPosts();
+        bool TryAddPost(int userId, PostEntity post);
+        bool TryEditPost(PostEntity post);
         bool TryDeletePost(int id);
         bool IncreasePostViews(int postId);
     }

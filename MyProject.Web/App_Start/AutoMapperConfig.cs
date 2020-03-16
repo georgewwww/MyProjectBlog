@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MyProject.Domain.Entities;
+using MyProject.Domain.Entities.Core;
 using MyProject.Web.Models;
 
 namespace MyProject.Web
@@ -10,14 +11,16 @@ namespace MyProject.Web
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<UserLogin, ULoginData>();
-				cfg.CreateMap<UsersDbTable, UserEntity>();
+				cfg.CreateMap<UserLoginModel, ULoginData>();
+				cfg.CreateMap<User, UserEntity>();
 				cfg.CreateMap<UserEntity, UserData>();
-				cfg.CreateMap<UserRegister, URegisterData>();
-				cfg.CreateMap<URegisterData, UsersDbTable>();
-				cfg.CreateMap<BlogDbTable, BlogEntity>();
-				cfg.CreateMap<BlogEntity, BlogDbTable>();
-				cfg.CreateMap<PostViewModel, BlogEntity>();
+				cfg.CreateMap<UserRegisterModel, URegisterData>();
+				cfg.CreateMap<URegisterData, User>();
+				cfg.CreateMap<Post, PostEntity>();
+				cfg.CreateMap<PostEntity, Post>();
+				cfg.CreateMap<PostViewModel, PostEntity>();
+				cfg.CreateMap<PostModel, PostEntity>().ReverseMap();
+				cfg.CreateMap<UserModel, UserEntity>().ReverseMap();
 			});
 			return config;
 		}

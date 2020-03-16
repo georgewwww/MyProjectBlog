@@ -1,8 +1,6 @@
 ﻿using MyProject.BusinessLogic;
 using MyProject.Web.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
@@ -12,7 +10,7 @@ using MyProject.Web.Controllers.Attributes;
 
 namespace MyProject.Web.Controllers
 {
-    public class LoginController : Controller
+	public class LoginController : Controller
 	{
 		public readonly Mapper _mapper;
 		private readonly ISession _session;
@@ -33,7 +31,7 @@ namespace MyProject.Web.Controllers
 		[GuestMod]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Index(UserLogin login)
+		public ActionResult Index(UserLoginModel login)
 		{
 			if (ModelState.IsValid)
 			{

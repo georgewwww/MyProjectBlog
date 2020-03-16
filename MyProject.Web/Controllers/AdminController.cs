@@ -1,11 +1,6 @@
-﻿using AutoMapper;
-using MyProject.Web.Controllers.Attributes;
+﻿using MyProject.Web.Controllers.Attributes;
 using MyProject.Web.Extension;
 using MyProject.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MyProject.Web.Controllers

@@ -1,4 +1,4 @@
-﻿@model MyProject.Domain.Entities.BlogEntity
+﻿@model MyProject.Domain.Entities.PostEntity
 @{
     ViewBag.Title = "Post Details";
 }
@@ -13,8 +13,8 @@
             <div class="bppContentCont">
                 <div class="bppCCAuthorWrap">
                     <div class="bppccaAuthorInfo">
-                        <div class="bpcsAuthor" style="background-image: url(@Model.AuthorAvatar);"></div>
-                        <div class="bppccaName"><span>by</span> @Model.PostAuthor</div>
+                        <div class="bpcsAuthor" style="background-image: url(@Model.User.AvatarUrl);"></div>
+                        <div class="bppccaName"><span>by</span> @Model.User.Username</div>
                     </div>
                 </div>
                 <div class="bppCCPostWrap" style="">
@@ -33,12 +33,12 @@
                     <div class="commentsCont">
                         <div class="commentsCount">0 comments</div>
                         <div class="commentPostInactive">
-                            <div class="commentPIAvt" style="background-image: url(Resources/default_avatar.png);"></div>
+                            <div class="commentPIAvt" style="background-image: url(/Content/imgs/default_avatar.png);"></div>
                             <div class="btn disabled primary">comment</div>
                         </div>
                         <div class="commentsWrap" style="display: none;">
                             <div class="commentItem">
-                                <div class="commentItemAvatar" style="background-image: url('Resources/default_avatar.png');"></div>
+                                <div class="commentItemAvatar" style="background-image: url('/Content/imgs/default_avatar.png');"></div>
                                 <div class="commentItemContentWrap">
                                     <div class="cicwTop">
                                         <div class="cicwTAuthorName">test</div>

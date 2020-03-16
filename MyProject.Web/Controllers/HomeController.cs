@@ -1,12 +1,12 @@
-﻿using AutoMapper;
-using MyProject.Web.Extension;
+﻿using MyProject.Web.Extension;
 using MyProject.Web.Models;
 using System.Web.Mvc;
 using MyProject.BusinessLogic;
+using System.Collections.Generic;
 
 namespace MyProject.Web.Controllers
 {
-    public class HomeController : BaseController
+	public class HomeController : BaseController
     {
         private readonly IBlog _blog;
 
@@ -21,9 +21,11 @@ namespace MyProject.Web.Controllers
         {
 			SessionStatus();
 
-            var model = new IndexPostsViewModel();
-            model.featuredPost = _blog.GetFeaturedPost();
-            model.lastPosts = _blog.GetLastPosts();
+			var model = new IndexPostsModel
+			{
+				FeaturedPost = _mapper.Map<PostModel>(_blog.GetFeaturedPost()),
+				LastPosts = _mapper.Map<List<PostModel>>(_blog.GetLastPosts())
+			};
 
 			return View(model);
         }
@@ -31,6 +33,7 @@ namespace MyProject.Web.Controllers
 		public new ActionResult Profile()
 		{
 			SessionStatus();
+
 			if ((string)System.Web.HttpContext.Current.Session["LoginStatus"] == "login")
 			{
 				var entity = System.Web.HttpContext.Current.GetMySessionObject();

@@ -60,9 +60,7 @@
   <ItemGroup>
     <Compile Include="Core\BlogApi.cs" />
     <Compile Include="Core\BlogBL.cs" />
-    <Compile Include="DbModel\BlogContext.cs" />
-    <Compile Include="DbModel\SessionContext.cs" />
-    <Compile Include="DbModel\UserContext.cs" />
+    <Compile Include="BlogContext.cs" />
     <Compile Include="InstanceBL.cs" />
     <Compile Include="Core\SessionBL.cs" />
     <Compile Include="Core\UserApi.cs" />

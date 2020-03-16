@@ -1,10 +1,8 @@
 ﻿@using System.Web.Optimization
 @using MyProject.Web.Extension
-@model IEnumerable<MyProject.Domain.Entities.BlogEntity>
+@model IEnumerable<MyProject.Domain.Entities.PostEntity>
 @{
     ViewBag.Title = "Blog";
-}
-@{
     var user = System.Web.HttpContext.Current.GetMySessionObject();
 }
 
@@ -66,7 +64,7 @@
                                     <i class="far fa-eye"></i>
                                     <span>@post.Views</span>
                                 </div>
-                                <div class="bpcsAuthor" title="@post.PostAuthor" style="background-image: url(@post.AuthorAvatar);"></div>
+                                <div class="bpcsAuthor" title="@post.User.Username" style="background-image: url(@post.User.AvatarUrl);"></div>
                             </div>
                         </div>
                     </div>
