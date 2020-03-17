@@ -19,6 +19,7 @@ namespace MyProject.Domain.Entities.Core
 
 		[Required]
 		[DataType(DataType.Html)]
+		[StringLength(2500)]
 		public string PostContent { get; set; }
 
 		[Required]
